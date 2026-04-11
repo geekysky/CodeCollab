@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './App.css'
-import Home from './pages/home'
-import Editorpage from './pages/editorpage'
+import Home from './pages/Home'
+import Editorpage from './pages/Editorpage'
 
 function App() {
 
