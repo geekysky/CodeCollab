@@ -95,3 +95,56 @@ footer a:hover {
   color: #2b824c;
   border-bottom: 1px solid #2b824c;
 }
+
+.mainWrap {
+  display: flex;
+  height: 100vh;
+  color: #fff;
+}
+
+.aside {
+  background: #282a36;
+  width: 250px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.asideInner {
+  flex: 1;
+}
+
+.logo {
+  padding: 10px;
+  text-align: center;
+}
+
+.logoImage {
+  height: 50px;
+}
+
+.clientsList {
+  margin-top: 20px;
+}
+
+.client {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.userName {
+  margin-top: 0;
+}
+
+.copyBtn,
+.leaveBtn {
+  margin-top: 20px;
+  width: 100%;
+}
+
+.editorWrap {
+  flex: 1;
+  padding: 16px;
+}

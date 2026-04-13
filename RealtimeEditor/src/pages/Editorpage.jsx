@@ -1,8 +1,12 @@
-import React from 'react'
-
+import React, { useState } from 'react'
+import Client from '../components/Client'
+import Editor from '../components/Editor'
 function Editorpage() {
 
-  const [clients, setClients] = useState([]);
+  const [clients, setClients] = useState([
+    { socketId: 1, username: 'Debjyoti' },
+    { socketId: 2, username: 'John Doe' }
+  ]);
 
   return (
     <div className='mainWrap'>
@@ -13,14 +17,20 @@ function Editorpage() {
           </div>
           <h3>Connected</h3>
           <div className='clientsList'>
-            <div className='client'>
-              <span className='userName'>Debjyoti</span>
-            </div>
+            {
+              clients.map((client) => (
+                <Client key={client.socketId} username={client.username} />
+              ))
+            }
           </div>
         </div>
+        <button className='btn copyBtn'>Copy Room ID</button>
+        <button className='btn leaveBtn'>Leave</button>
       </div>
 
-      <div className='editorWrap'>Editor goes here...</div>
+      <div className='editorWrap'>
+        <Editor />
+      </div>
     </div>
   )
 }
