@@ -28,6 +28,7 @@ function Editorpage() {
         <button className='btn leaveBtn'>Leave</button>
       </div>
 
+      //Editor on the right hand side
       <div className='editorWrap'>
         <Editor />
       </div>
