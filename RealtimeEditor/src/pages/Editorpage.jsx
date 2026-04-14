@@ -5,7 +5,7 @@ function Editorpage() {
 
   const [clients, setClients] = useState([
     { socketId: 1, username: 'Debjyoti' },
-    { socketId: 2, username: 'John Doe' }
+    { socketId: 2, username: 'Advit Katti' }
   ]);
 
   return (
@@ -28,7 +28,7 @@ function Editorpage() {
         <button className='btn leaveBtn'>Leave</button>
       </div>
 
-      //Editor on the right hand side
+      {/* Editor on the right hand side */}
       <div className='editorWrap'>
         <Editor />
       </div>
