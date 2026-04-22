@@ -49,7 +49,16 @@ function Editorpage() {
         }
 
         setClients(clients);
-      })
+      });
+
+      // Listening for disconnected event...
+      socketRef.current.on(ACTIONS.DISCONNECTED, ({ socketId, username }) => {
+        toast.success(`${username} left the room`);
+
+        setClients((prev) => {
+          return prev.filter((client) => client.socketId !== socketId);
+        })
+      });
 
 
     };
@@ -59,6 +68,9 @@ function Editorpage() {
       // Cleanup the socket connection on component unmount
       if (socketRef.current) {
         socketRef.current.disconnect();
+        socketRef.current.off(ACTIONS.JOINED);
+        socketRef.current.off(ACTIONS.DISCONNECTED);
+
       }
     };
   }, []);
