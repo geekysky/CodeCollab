@@ -3,9 +3,19 @@ const app = express();
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import ACTIONS from './Actions.js';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(filename);
 
 const server = createServer(app);
 const io = new Server(server);
+
+app.use(express.static('dist'));
+app.use((req, res, next) => {
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+})
 
 const userSocketMap = {};
 function getAllConnectedClients(roomId) {
