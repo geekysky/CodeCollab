@@ -8,12 +8,12 @@ import { useLocation, useNavigate, Navigate, useParams } from 'react-router-dom'
 
 function Editorpage() {
   const socketRef = useRef(null);
+  const codeRef = useRef(null);
   const location = useLocation();
   const reactNavigator = useNavigate();
   const { roomId } = useParams();
 
   const [clients, setClients] = useState([]);
-
 
 
   useEffect(() => {
@@ -49,6 +49,11 @@ function Editorpage() {
         }
 
         setClients(clients);
+        socketRef.current.emit(ACTIONS.SYNC_CODE, {
+          code: codeRef.current,
+          socketId,
+        });
+
       });
 
       // Listening for disconnected event...
@@ -75,6 +80,20 @@ function Editorpage() {
     };
   }, []);
 
+  async function copyRoomId() {
+    try {
+      await navigator.clipboard.writeText(roomId);
+      toast.success('Room ID copied to clipboard');
+    } catch (error) {
+      console.log(error);
+      toast.error('Failed to copy room ID');
+    }
+  }
+
+  function leaveRoom() {
+    reactNavigator('/');
+  }
+
   if (!location.state) {
     return <Navigate to="/" />
   }
@@ -95,13 +114,15 @@ function Editorpage() {
             }
           </div>
         </div>
-        <button className='btn copyBtn'>Copy Room ID</button>
-        <button className='btn leaveBtn'>Leave</button>
+        <button className='btn copyBtn' onClick={copyRoomId}>Copy Room ID</button>
+        <button className='btn leaveBtn' onClick={leaveRoom}>Leave</button>
       </div>
 
       {/* Editor on the right hand side */}
       <div className='editorWrap'>
-        <Editor />
+        <Editor socketRef={socketRef} roomId={roomId} onCodeChange={(code) => {
+          codeRef.current = code;
+        }} />
       </div>
     </div>
   )

@@ -5,8 +5,9 @@ import 'codemirror/mode/javascript/javascript';
 import 'codemirror/theme/dracula.css';
 import 'codemirror/addon/edit/closebrackets';
 import 'codemirror/addon/edit/closetag';
+import ACTIONS from '/Actions.js';
 
-function Editor() {
+function Editor({ socketRef, roomId, onCodeChange }) {
     const editorRef = useRef(null);
 
     useEffect(() => {
@@ -19,14 +20,49 @@ function Editor() {
                     autoCloseBrackets: true,
                     autoCloseTags: true,
                 });
+
+                editorRef.current.on('change', (instance, changes) => {
+                    //console.log(changes);
+
+                    const { origin } = changes;
+                    const code = instance.getValue();
+
+                    onCodeChange(code);
+
+                    if (origin !== 'setValue') {
+                        console.log('working?', code);
+                        socketRef.current.emit(ACTIONS.CODE_CHANGE, {
+                            roomId,
+                            code,
+                        });
+                    }
+                    console.log(code);
+                });
             }
         }
-        
+
         init();
     }, []);
 
+    useEffect(() => {
+        // listen for changes from other clients and set it's value onto our editor
+        if (socketRef.current != null) {
+            socketRef.current.on(ACTIONS.CODE_CHANGE, ({ code }) => {
+                if (code !== null) {
+                    editorRef.current.setValue(code);
+                }
+            });
+        }
+
+        return () => {
+            socketRef.current?.off(ACTIONS.CODE_CHANGE);
+        }
+
+    }, [socketRef.current]);
+
+
     return (
-        <textarea id="realtimeEditor">Realtime Code Editor</textarea>
+        <textarea id="realtimeEditor" defaultValue="Realtime Code Editor"></textarea>
     )
 }
 
