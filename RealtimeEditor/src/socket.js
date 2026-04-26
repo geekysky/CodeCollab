@@ -1,6 +1,5 @@
 import { io } from "socket.io-client";
 
-
 export const initSocket = async () => {
     const options = {
         'force new connection': true,
@@ -9,7 +8,5 @@ export const initSocket = async () => {
         transports: ['websocket'],
     };
 
-    return io(import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000', options);
+    return io(window.location.origin, options);
 }
-
-
